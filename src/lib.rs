@@ -7,12 +7,15 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
+#[allow(unused_imports)]
+use bootloader::{BootInfo, entry_point};
 
 pub mod serial;
 pub mod vga_buffer;
 pub mod interrupts;
 pub mod gdt;
 pub mod keyboard;
+pub mod memory;
 
 pub fn init() {
     gdt::init();
@@ -57,13 +60,15 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
     hlt_loop();
 }
 
+#[cfg(test)]
+entry_point!(test_kernel_main);
+
 /// Entry point for `cargo test`
 #[cfg(test)]
-#[unsafe(no_mangle)]
-pub extern "C" fn _start() -> ! {
+fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     init();
     test_main();
-    loop {}
+    hlt_loop();
 }
 
 #[cfg(test)]

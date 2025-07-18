@@ -6,7 +6,7 @@
 
 
 
-use core::panic::PanicInfo;
+use core::{panic::PanicInfo};
 use beanos_rust::println;
 #[allow(unused_imports)]
 use beanos_rust::vga_buffer;
@@ -26,7 +26,7 @@ pub extern "C" fn _start() -> ! {
 
 
     println!("Did this run?");
-    loop {} // similar to hlt
+    beanos_rust::hlt_loop();
 }
 
 #[panic_handler]
@@ -35,7 +35,7 @@ fn panic(info: &PanicInfo) -> ! {
     vga_buffer::WRITER.lock().change_color(vga_buffer::ColorCode::new(vga_buffer::Color::Red, vga_buffer::Color::Black));
     println!("{}", info);
     vga_buffer::WRITER.lock().change_color(vga_buffer::ColorCode::new(vga_buffer::Color::LightGreen, vga_buffer::Color::Black));
-    loop {} // loop when panic happends
+    beanos_rust::hlt_loop();
 }
 
 #[cfg(test)]

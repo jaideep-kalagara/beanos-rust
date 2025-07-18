@@ -8,6 +8,7 @@ use x86_64::instructions::tables::load_tss;
 use x86_64::instructions::segmentation::{CS, Segment};
 use lazy_static::lazy_static;
 
+
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;
 
 lazy_static! {

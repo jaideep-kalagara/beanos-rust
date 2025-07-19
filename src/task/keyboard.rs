@@ -72,7 +72,6 @@ pub async fn print_keypresses() {
         layouts::Us104Key,
         HandleControl::Ignore,
     );
-    print!("COMMAND> ");
 
     while let Some(scancode) = scancodes.next().await {
         if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {

@@ -10,8 +10,9 @@ use beanos_rust::allocator;
 use beanos_rust::memory;
 use beanos_rust::memory::get_usable_memory;
 use beanos_rust::println;
+use beanos_rust::task::Task;
+use beanos_rust::task::executor::Executor;
 use beanos_rust::task::keyboard;
-use beanos_rust::task::{Task, simple_executor::SimpleExecutor};
 #[allow(unused_imports)]
 use beanos_rust::vga_buffer;
 use bootloader::BootInfo;
@@ -30,7 +31,6 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let mut mapper = unsafe { memory::init(phys_mem_offset) };
     let mut frame_allocator =
         unsafe { memory::BootInfoFrameAllocator::init(&boot_info.memory_map) };
-    let mut executor = SimpleExecutor::new();
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
     println!("----------------------------");
@@ -46,12 +46,12 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     println!("----------------------------");
     println!();
 
-    executor.spawn(Task::new(keyboard::print_keypresses()));
-    executor.run();
     #[cfg(test)]
     test_main();
 
-    beanos_rust::hlt_loop();
+    let mut executor = Executor::new();
+    executor.spawn(Task::new(keyboard::print_keypresses()));
+    executor.run();
 }
 
 #[panic_handler]

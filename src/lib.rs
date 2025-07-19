@@ -17,6 +17,7 @@ pub mod interrupts;
 pub mod memory;
 pub mod serial;
 pub mod task;
+pub mod disk;
 pub mod vga_buffer;
 
 pub fn init() {

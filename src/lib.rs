@@ -6,16 +6,18 @@
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use core::panic::PanicInfo;
 #[allow(unused_imports)]
 use bootloader::{BootInfo, entry_point};
+use core::panic::PanicInfo;
+extern crate alloc;
 
-pub mod serial;
-pub mod vga_buffer;
-pub mod interrupts;
+pub mod allocator;
 pub mod gdt;
-pub mod keyboard;
+pub mod interrupts;
 pub mod memory;
+pub mod serial;
+pub mod task;
+pub mod vga_buffer;
 
 pub fn init() {
     gdt::init();

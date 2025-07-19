@@ -4,7 +4,7 @@
 
 use core::panic::PanicInfo;
 
-use beanos_rust::{ exit_qemu, QemuExitCode, serial_println, serial_print };
+use beanos_rust::{QemuExitCode, exit_qemu, serial_print, serial_println};
 use x86_64::structures::idt::InterruptStackFrame;
 
 use lazy_static::lazy_static;
@@ -50,8 +50,6 @@ lazy_static! {
 pub fn init_test_idt() {
     TEST_IDT.load();
 }
-
- 
 
 extern "x86-interrupt" fn test_double_fault_handler(
     _stack_frame: InterruptStackFrame,

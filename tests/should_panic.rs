@@ -4,8 +4,8 @@
 #![test_runner(test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use core::panic::PanicInfo;
 use beanos_rust::{QemuExitCode, exit_qemu, serial_println};
+use core::panic::PanicInfo;
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
@@ -19,7 +19,7 @@ pub extern "C" fn _start() -> ! {
     should_fail();
     serial_println!("[test did not panic]");
     exit_qemu(QemuExitCode::Failed);
-    loop{}
+    loop {}
 }
 
 pub fn test_runner(tests: &[&dyn Fn()]) {
